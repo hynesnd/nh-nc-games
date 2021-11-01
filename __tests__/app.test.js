@@ -35,4 +35,30 @@ describe("api testing:", () => {
       });
     });
   });
+
+  describe("/api/reviews path:", () => {
+    describe("GET method:", () => {
+      it("Status 200: responds with a correct review object", () => {
+        return request(app)
+          .get("/api/reviews/1")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.review).toEqual(
+              expect.objectContaining({
+                owner: expect.any(String),
+                title: expect.any(String),
+                review_id: expect.any(Number),
+                review_body: expect.any(String),
+                designer: expect.any(String),
+                review_img_url: expect.any(String),
+                category: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                comment_count: expect.any(String),
+              })
+            );
+          });
+      });
+    });
+  });
 });
