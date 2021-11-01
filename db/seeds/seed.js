@@ -51,7 +51,7 @@ const seed = (data) => {
         author VARCHAR REFERENCES users(username) ON DELETE CASCADE NOT NULL,
         review_id INT REFERENCES reviews(review_id) ON DELETE CASCADE NOT NULL,
         votes INT DEFAULT 0,
-        created_id TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         body VARCHAR
       )`);
     })
@@ -102,6 +102,24 @@ const seed = (data) => {
         })
       );
 
+      return db.query(insertQuery);
+    })
+    .then(() => {
+      const insertQuery = format(
+        `INSERT INTO comments
+        (body, votes, author, review_id, created_at)
+        VALUES
+        %L;`,
+        commentData.map((comm) => {
+          return [
+            comm.body,
+            comm.votes,
+            comm.author,
+            comm.review_id,
+            comm.created_at,
+          ];
+        })
+      );
       return db.query(insertQuery);
     });
 };
