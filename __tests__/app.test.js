@@ -16,4 +16,23 @@ describe("api testing:", () => {
         expect(body.msg).toBe("path not found");
       });
   });
+
+  describe("/api/categories path:", () => {
+    describe("GET: method:", () => {
+      it("Status 200: responds with array of all category objects", () => {
+        return request(app)
+          .get("/api/categories")
+          .expect(200)
+          .then(({ body }) => {
+            expect(Array.isArray(body.categories)).toBe(true);
+            body.categories.forEach((cat) => {
+              expect.objectContaining({
+                slug: expect.any(String),
+                description: expect.any(String),
+              });
+            });
+          });
+      });
+    });
+  });
 });
