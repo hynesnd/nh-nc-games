@@ -67,6 +67,19 @@ const seed = (data) => {
       );
 
       return db.query(insertQuery);
+    })
+    .then(() => {
+      const insertQuery = format(
+        `INSERT INTO users
+        (username, name, avatar_url)
+        VALUES
+        %L;`,
+        userData.map((user) => {
+          return [user.username, user.name, user.avatar_url];
+        })
+      );
+
+      return db.query(insertQuery);
     });
   // 2. insert data
 };
