@@ -1,4 +1,5 @@
 const db = require("../connection");
+const format = require("pg-format");
 
 const seed = (data) => {
   const { categoryData, commentData, reviewData, userData } = data;
@@ -53,6 +54,19 @@ const seed = (data) => {
         created_id TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         body VARCHAR
       )`);
+    })
+    .then(() => {
+      const insertQuery = format(
+        `INSERT INTO categories
+        (slug, description)
+        VALUES
+        %L;`,
+        categoryData.map((cat) => {
+          return [cat.slug, cat.description];
+        })
+      );
+
+      return db.query(insertQuery);
     });
   // 2. insert data
 };
