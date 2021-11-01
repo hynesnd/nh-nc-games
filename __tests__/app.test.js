@@ -68,6 +68,15 @@ describe("api testing:", () => {
             expect(body.msg).toBe("no items found");
           });
       });
+
+      it("Status 400: responds with invalid id when passed review_id not a number", () => {
+        return request(app)
+          .get("/api/reviews/invalid_id")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid input");
+          });
+      });
     });
   });
 });
