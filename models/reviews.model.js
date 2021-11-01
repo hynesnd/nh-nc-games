@@ -14,9 +14,16 @@ exports.selectReview = async (review_id) => {
   reviews.votes,
   count(comments.comment_id) AS comment_count
   FROM reviews
-  JOIN comments ON reviews.review_id = comments.review_id
+  LEFT JOIN comments ON reviews.review_id = comments.review_id
+  WHERE reviews.review_id = $1
   GROUP BY reviews.review_id`;
 
-  const { rows } = await db.query(selectQuery);
-  return rows[0];
+  const { rows } = await db.query(selectQuery, [review_id]);
+
+  console.log(rows);
+  if (rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "no items found" });
+  } else {
+    return rows[0];
+  }
 };

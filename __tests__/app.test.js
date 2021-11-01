@@ -59,6 +59,15 @@ describe("api testing:", () => {
             );
           });
       });
+
+      it("Status 404: responds with not found when requested id does not exist", () => {
+        return request(app)
+          .get("/api/reviews/999999")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("no items found");
+          });
+      });
     });
   });
 });
