@@ -56,6 +56,7 @@ const seed = (data) => {
       )`);
     })
     .then(() => {
+      // 2. insert data
       const insertQuery = format(
         `INSERT INTO categories
         (slug, description)
@@ -80,8 +81,29 @@ const seed = (data) => {
       );
 
       return db.query(insertQuery);
+    })
+    .then(() => {
+      const insertQuery = format(
+        `INSERT INTO reviews
+        (title, designer, owner, review_img_url, review_body, category, created_at, votes)
+        VALUES
+        %L;`,
+        reviewData.map((rev) => {
+          return [
+            rev.title,
+            rev.designer,
+            rev.owner,
+            rev.review_img_url,
+            rev.review_body,
+            rev.category,
+            rev.created_at,
+            rev.votes,
+          ];
+        })
+      );
+
+      return db.query(insertQuery);
     });
-  // 2. insert data
 };
 
 module.exports = seed;
