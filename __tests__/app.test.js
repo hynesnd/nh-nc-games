@@ -60,6 +60,15 @@ describe("api testing:", () => {
           });
       });
 
+      it("Status 200: comment_ count aggregate function returns correct number  of comments", () => {
+        return request(app)
+          .get("/api/reviews/3")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.review.comment_count).toBe("3");
+          });
+      });
+
       it("Status 404: responds with not found when requested id does not exist", () => {
         return request(app)
           .get("/api/reviews/999999")
@@ -69,12 +78,12 @@ describe("api testing:", () => {
           });
       });
 
-      it("Status 400: responds with invalid id when passed review_id not a number", () => {
+      it("Status 400: responds with invalid query when passed review_id not a number", () => {
         return request(app)
           .get("/api/reviews/invalid_id")
           .expect(400)
           .then(({ body }) => {
-            expect(body.msg).toBe("invalid input");
+            expect(body.msg).toBe("invalid query");
           });
       });
     });

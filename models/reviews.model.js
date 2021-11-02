@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { convertStrToBigInt } = require("../utils");
 
 exports.selectReview = async (review_id) => {
   const selectQuery = `
@@ -19,6 +20,11 @@ exports.selectReview = async (review_id) => {
   GROUP BY reviews.review_id`;
 
   const { rows } = await db.query(selectQuery, [review_id]);
+
+  rows.forEach(
+    (review) =>
+      (review.comment_count = convertStrToBigInt(review.comment_count))
+  );
 
   console.log(rows);
   if (rows.length === 0) {
