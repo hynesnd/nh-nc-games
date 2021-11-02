@@ -31,3 +31,5 @@ exports.selectReview = async (review_id) => {
     return formatRows[0];
   }
 };
+
+exports.updateReview = async () => {};
