@@ -144,6 +144,39 @@ describe("api testing:", () => {
             expect(body.msg).toBe("id not found");
           });
       });
+
+      it("Status 400: responds with invalid query when review_id not a number", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/reviews/INVALID")
+          .send({ inc_votes: newVote })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
+
+      it("Status 400: responds with invalid query body if not passed proper inc_votes", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/reviews/2")
+          .send({ NOT_THE_COLUMN: newVote })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query body");
+          });
+      });
+
+      it("Status 400: responds with invalid query if inc_votes wrong datatype", () => {
+        const newVote = "invalid";
+        return request(app)
+          .patch("/api/reviews/2")
+          .send({ inc_votes: newVote })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
     });
   });
 });

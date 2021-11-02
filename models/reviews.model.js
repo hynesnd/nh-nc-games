@@ -2,6 +2,8 @@ const db = require("../db/connection");
 const { convertBigintStrToNum } = require("../utils");
 
 exports.selectReview = async (review_id) => {
+  //if review === undefined return a promise reject
+
   const selectQuery = `
   SELECT 
   reviews.owner,
@@ -32,14 +34,20 @@ exports.selectReview = async (review_id) => {
   }
 };
 
-exports.updateReview = async (review_id, inc_votes) => {
+exports.updateReview = async (review_id, body) => {
+  const { inc_votes } = body;
+
+  if (inc_votes === undefined || inc_votes === null) {
+    return Promise.reject({ status: 400, msg: "invalid query body" });
+  }
+
   const updateQuery = `
   UPDATE reviews
   SET votes = votes + $2
   WHERE review_id = $1
   RETURNING *`;
 
-  const queryParams = [review_id, inc_votes];
+  const queryParams = [review_id, body.inc_votes];
 
   const { rows } = await db.query(updateQuery, queryParams);
 

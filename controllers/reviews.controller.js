@@ -2,6 +2,7 @@ const { selectReview, updateReview } = require("../models/reviews.model");
 
 exports.getReview = (req, res, next) => {
   const { review_id } = req.params;
+  //if !review_id next({status, msg})
   selectReview(review_id)
     .then((review) => {
       res.status(200).send({ review });
@@ -11,8 +12,7 @@ exports.getReview = (req, res, next) => {
 
 exports.patchReview = (req, res, next) => {
   const { review_id } = req.params;
-  const { inc_votes } = req.body;
-  updateReview(review_id, inc_votes)
+  updateReview(review_id, req.body)
     .then((review) => {
       res.status(200).send({ review });
     })
