@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { convertStrToBigInt } = require("../utils");
+const { convertBigintStrToNum } = require("../utils");
 
 exports.selectReview = async (review_id) => {
   const selectQuery = `
@@ -21,15 +21,13 @@ exports.selectReview = async (review_id) => {
 
   const { rows } = await db.query(selectQuery, [review_id]);
 
-  rows.forEach(
-    (review) =>
-      (review.comment_count = convertStrToBigInt(review.comment_count))
-  );
-
-  console.log(rows);
   if (rows.length === 0) {
     return Promise.reject({ status: 404, msg: "no items found" });
   } else {
-    return rows[0];
+    const formatRows = rows.map((row) => ({ ...row }));
+    formatRows.forEach(
+      (row) => (row.comment_count = convertBigintStrToNum(row.comment_count))
+    );
+    return formatRows[0];
   }
 };

@@ -54,7 +54,7 @@ describe("api testing:", () => {
                 category: expect.any(String),
                 created_at: expect.any(String),
                 votes: expect.any(Number),
-                comment_count: expect.any(String),
+                comment_count: expect.any(Number),
               })
             );
           });
@@ -65,7 +65,7 @@ describe("api testing:", () => {
           .get("/api/reviews/3")
           .expect(200)
           .then(({ body }) => {
-            expect(body.review.comment_count).toBe("3");
+            expect(body.review.comment_count).toBe(3);
           });
       });
 
