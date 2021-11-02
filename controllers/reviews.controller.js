@@ -11,7 +11,10 @@ exports.getReview = (req, res, next) => {
 
 exports.patchReview = (req, res, next) => {
   const { review_id } = req.params;
-  updateReview()
-    .then(() => {})
+  const { inc_votes } = req.body;
+  updateReview(review_id, inc_votes)
+    .then((review) => {
+      res.status(200).send({ review });
+    })
     .catch(next);
 };

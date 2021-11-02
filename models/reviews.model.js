@@ -22,7 +22,7 @@ exports.selectReview = async (review_id) => {
   const { rows } = await db.query(selectQuery, [review_id]);
 
   if (rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "no items found" });
+    return Promise.reject({ status: 404, msg: "id not found" });
   } else {
     const formatRows = rows.map((row) => ({ ...row }));
     formatRows.forEach(
@@ -32,4 +32,20 @@ exports.selectReview = async (review_id) => {
   }
 };
 
-exports.updateReview = async () => {};
+exports.updateReview = async (review_id, inc_votes) => {
+  const updateQuery = `
+  UPDATE reviews
+  SET votes = votes + $2
+  WHERE review_id = $1
+  RETURNING *`;
+
+  const queryParams = [review_id, inc_votes];
+
+  const { rows } = await db.query(updateQuery, queryParams);
+
+  if (rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "id not found" });
+  } else {
+    return rows[0];
+  }
+};

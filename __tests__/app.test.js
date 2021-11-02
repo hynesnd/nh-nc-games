@@ -74,7 +74,7 @@ describe("api testing:", () => {
           .get("/api/reviews/999999")
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("no items found");
+            expect(body.msg).toBe("id not found");
           });
       });
 
@@ -109,6 +109,39 @@ describe("api testing:", () => {
                 votes: expect.any(Number),
               })
             );
+          });
+      });
+
+      it("Status 200: inc_votes increases vote count by correct amount", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/reviews/2")
+          .send({ inc_votes: newVote })
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.review.votes).toBe(10);
+          });
+      });
+
+      it("Status 200: inc_votes decreases vote count by correct amount", () => {
+        const newVote = -6;
+        return request(app)
+          .patch("/api/reviews/2")
+          .send({ inc_votes: newVote })
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.review.votes).toBe(-1);
+          });
+      });
+
+      it("Status 404: returns not found when attempting to patch non-existent review_id", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/reviews/9999")
+          .send({ inc_votes: newVote })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("id not found");
           });
       });
     });
