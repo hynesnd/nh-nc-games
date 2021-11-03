@@ -58,9 +58,12 @@ exports.updateReview = async (review_id, body) => {
   }
 };
 
-exports.selectAllReviews = async (sort_by = "created_at", order = "DESC") => {
-  console.log(sort_by);
-  const selectQuery = `
+exports.selectAllReviews = async (
+  sort_by = "created_at",
+  order = "DESC",
+  category
+) => {
+  let selectQuery = `
   SELECT
   reviews.owner,
   reviews.title,
@@ -71,11 +74,20 @@ exports.selectAllReviews = async (sort_by = "created_at", order = "DESC") => {
   reviews.votes,
   CAST(COUNT(comments.comment_id) AS INTEGER) AS comment_count
   FROM reviews
-  LEFT JOIN comments ON reviews.review_id = comments.review_id
-  GROUP BY reviews.review_id
+  LEFT JOIN comments ON reviews.review_id = comments.review_id`;
+
+  const selectParams = [];
+  if (category) {
+    selectParams.push(category);
+    console.log(selectParams);
+    selectQuery += " WHERE category = $1";
+  }
+
+  selectQuery += `
+   GROUP BY reviews.review_id
   ORDER BY ${sort_by} ${order}`;
 
-  const { rows } = await db.query(selectQuery);
+  const { rows } = await db.query(selectQuery, selectParams);
 
   return rows;
 };

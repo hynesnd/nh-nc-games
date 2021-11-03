@@ -245,6 +245,15 @@ describe("api testing:", () => {
             expect(body.reviews).toBeSortedBy("votes");
           });
       });
+
+      it("Status 200: responds with array filtered by category query", () => {
+        return request(app)
+          .get("/api/reviews?category=social deduction")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.reviews).toHaveLength(11);
+          });
+      });
     });
   });
 });
