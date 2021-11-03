@@ -353,24 +353,34 @@ describe("api testing:", () => {
       });
     });
 
-    // describe("POST method:", () => {
-    //   it("Status 200: responds with posted comment", () => {
-    //     return request(app)
-    //       .post("/api/reviews/1/comments")
-    //       .send({ username: "mallionaire", body: "test review" })
-    //       .expect(201)
-    //       .then(({ body }) => {
-    //         expect(body.comment).toEqual(
-    //           expect.objectContaining({
-    //             comment_id: expect.any(Number),
-    //             votes: 0,
-    //             created_at: expect.any(String),
-    //             author: "mallionaire",
-    //             body: "test review",
-    //           })
-    //         );
-    //       });
-    //   });
-    // });
+    describe("POST method:", () => {
+      it("Status 200: responds with posted comment", () => {
+        return request(app)
+          .post("/api/reviews/1/comments")
+          .send({ username: "mallionaire", body: "test review" })
+          .expect(201)
+          .then(({ body }) => {
+            expect(body.comment).toEqual(
+              expect.objectContaining({
+                comment_id: expect.any(Number),
+                votes: 0,
+                created_at: expect.any(String),
+                author: "mallionaire",
+                body: "test review",
+              })
+            );
+          });
+      });
+
+      it("Status 404: responds with resource not found if attempting to post comment to review_id that does not exist", () => {
+        return request(app)
+          .post("/api/reviews/999999/comments")
+          .send({ username: "mallionaire", body: "test review" })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found");
+          });
+      });
+    });
   });
 });

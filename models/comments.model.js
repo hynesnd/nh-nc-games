@@ -25,4 +25,18 @@ exports.selectCommentsByReviewId = async (review_id) => {
   }
 };
 
-exports.insertCommentByReviewId = async (review_id) => {};
+exports.insertCommentByReviewId = async (review_id, reqBody) => {
+  const { username, body } = reqBody;
+  const insertQuery = `
+  INSERT INTO comments
+  (review_id, author, body)
+  VALUES
+  ($1, $2, $3)
+  RETURNING *`;
+
+  queryValues = [review_id, username, body];
+
+  const { rows } = await db.query(insertQuery, queryValues);
+
+  return rows[0];
+};

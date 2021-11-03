@@ -13,7 +13,11 @@ exports.getCommentsByReviewId = (req, res, next) => {
 };
 
 exports.postCommentByReviewId = (req, res, next) => {
-  insertCommentByReviewId()
-    .then(() => {})
+  const { review_id } = req.params;
+  insertCommentByReviewId(review_id, req.body)
+    .then((comment) => {
+      console.log(comment);
+      res.status(201).send({ comment });
+    })
     .catch(next);
 };
