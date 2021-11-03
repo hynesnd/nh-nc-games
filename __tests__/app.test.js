@@ -36,7 +36,7 @@ describe("api testing:", () => {
     });
   });
 
-  describe("/api/reviews path:", () => {
+  describe("/api/reviews/:review_id path:", () => {
     describe("GET method:", () => {
       it("Status 200: responds with a correct review object", () => {
         return request(app)
@@ -175,6 +175,43 @@ describe("api testing:", () => {
           .expect(400)
           .then(({ body }) => {
             expect(body.msg).toBe("invalid query");
+          });
+      });
+
+      it("Status 400: responds with invalid query if req body has too many columns", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/reviews/2")
+          .send({ inc_votes: newVote, extra_column: "I'm wrong" })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query body");
+          });
+      });
+    });
+  });
+
+  describe("/api/reviews path:", () => {
+    describe("GET method:", () => {
+      it("Status 200: respond with an array of review objects", () => {
+        return request(app)
+          .get("/api/reviews")
+          .expect(200)
+          .then(({ body }) => {
+            body.reviews.forEach((rev) => {
+              expect(rev).toEqual(
+                expect.objectContaining({
+                  owner: expect.any(String),
+                  title: expect.any(String),
+                  review_id: expect.any(Number),
+                  category: expect.any(String),
+                  review_img_url: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                  comment_count: expect.any(Number),
+                })
+              );
+            });
           });
       });
     });

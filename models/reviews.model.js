@@ -35,6 +35,10 @@ exports.selectReview = async (review_id) => {
 };
 
 exports.updateReview = async (review_id, body) => {
+  if (Object.keys(body).length > 1) {
+    return Promise.reject({ status: 400, msg: "invalid query body" });
+  }
+
   const { inc_votes } = body;
 
   if (inc_votes === undefined || inc_votes === null) {
@@ -57,3 +61,5 @@ exports.updateReview = async (review_id, body) => {
     return rows[0];
   }
 };
+
+exports.selectAllReviews = async () => {};

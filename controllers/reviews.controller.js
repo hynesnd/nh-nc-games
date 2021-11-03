@@ -1,4 +1,8 @@
-const { selectReview, updateReview } = require("../models/reviews.model");
+const {
+  selectReview,
+  updateReview,
+  selectAllReviews,
+} = require("../models/reviews.model");
 
 exports.getReview = (req, res, next) => {
   const { review_id } = req.params;
@@ -16,5 +20,11 @@ exports.patchReview = (req, res, next) => {
     .then((review) => {
       res.status(200).send({ review });
     })
+    .catch(next);
+};
+
+exports.getAllReviews = (req, res, next) => {
+  selectAllReviews()
+    .then(() => {})
     .catch(next);
 };
