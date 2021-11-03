@@ -324,6 +324,53 @@ describe("api testing:", () => {
             );
           });
       });
+
+      it("Status 404: responds with resource not found if review_id doesn't exist", () => {
+        return request(app)
+          .get("/api/reviews/999999/comments")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found");
+          });
+      });
+
+      it("Status 404: responds with no comments found under review if review_id has no comments associated", () => {
+        return request(app)
+          .get("/api/reviews/1/comments")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("no comments found under review");
+          });
+      });
+
+      it("Status 400: responds with invalid query if review_id passed is not number", () => {
+        return request(app)
+          .get("/api/reviews/notnumber/comments")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
     });
+
+    // describe("POST method:", () => {
+    //   it("Status 200: responds with posted comment", () => {
+    //     return request(app)
+    //       .post("/api/reviews/1/comments")
+    //       .send({ username: "mallionaire", body: "test review" })
+    //       .expect(201)
+    //       .then(({ body }) => {
+    //         expect(body.comment).toEqual(
+    //           expect.objectContaining({
+    //             comment_id: expect.any(Number),
+    //             votes: 0,
+    //             created_at: expect.any(String),
+    //             author: "mallionaire",
+    //             body: "test review",
+    //           })
+    //         );
+    //       });
+    //   });
+    // });
   });
 });

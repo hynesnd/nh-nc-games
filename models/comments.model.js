@@ -14,5 +14,15 @@ exports.selectCommentsByReviewId = async (review_id) => {
 
   const { rows } = await db.query(selectStr, [review_id]);
 
-  return rows;
+  if (rows.length === 0) {
+    await checkExists("reviews", "review_id", review_id);
+    return Promise.reject({
+      status: 404,
+      msg: "no comments found under review",
+    });
+  } else {
+    return rows;
+  }
 };
+
+exports.insertCommentByReviewId = async (review_id) => {};
