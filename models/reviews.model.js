@@ -63,6 +63,20 @@ exports.selectAllReviews = async (
   order = "DESC",
   category
 ) => {
+  const sortColumns = [
+    "owner",
+    "title",
+    "review_id",
+    "category",
+    "review_img_url",
+    "created_at",
+    "votes",
+    "comment_count",
+  ];
+
+  if (!sortColumns.includes(sort_by)) {
+    return Promise.reject({ status: 400, msg: "invalid sort_by query" });
+  }
   let selectQuery = `
   SELECT
   reviews.owner,
@@ -79,12 +93,11 @@ exports.selectAllReviews = async (
   const selectParams = [];
   if (category) {
     selectParams.push(category);
-    console.log(selectParams);
     selectQuery += " WHERE category = $1";
   }
 
-  selectQuery += `
-   GROUP BY reviews.review_id
+  selectQuery += ` 
+  GROUP BY reviews.review_id
   ORDER BY ${sort_by} ${order}`;
 
   const { rows } = await db.query(selectQuery, selectParams);

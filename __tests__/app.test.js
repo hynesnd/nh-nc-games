@@ -193,7 +193,7 @@ describe("api testing:", () => {
 
   describe("/api/reviews path:", () => {
     describe("GET method:", () => {
-      it("Status 200: respond with an array of review objects", () => {
+      it("Status 200: responds with an array of review objects", () => {
         return request(app)
           .get("/api/reviews")
           .expect(200)
@@ -246,12 +246,21 @@ describe("api testing:", () => {
           });
       });
 
-      it("Status 200: responds with array filtered by category query", () => {
+      it("Status 200: will respond with array filtered by category query", () => {
         return request(app)
           .get("/api/reviews?category=social deduction")
           .expect(200)
           .then(({ body }) => {
             expect(body.reviews).toHaveLength(11);
+          });
+      });
+
+      it("Status 400: responds with invalid sort_by query if sorting by column that doesn't exist.", () => {
+        return request(app)
+          .get("/api/reviews?sort_by=notAColumn")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid sort_by query");
           });
       });
     });
