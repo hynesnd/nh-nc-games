@@ -3,6 +3,7 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const app = require("../app");
 const request = require("supertest");
+const { forEach } = require("../db/data/test-data/categories.js");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -297,6 +298,30 @@ describe("api testing:", () => {
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("no reviews found under category");
+          });
+      });
+    });
+  });
+
+  describe("/api/reviews/:review_id/comments path:", () => {
+    describe("GET method:", () => {
+      it("Status 200: responds with array of comment objects for given review_id", () => {
+        return request(app)
+          .get("/api/reviews/2/comments")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comments).toHaveLength(3);
+            body.comments.forEach((comm) =>
+              expect(comm).toEqual(
+                expect.objectContaining({
+                  comment_id: expect.any(Number),
+                  votes: expect.any(Number),
+                  created_at: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                })
+              )
+            );
           });
       });
     });
