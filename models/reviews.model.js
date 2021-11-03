@@ -59,6 +59,7 @@ exports.updateReview = async (review_id, body) => {
 };
 
 exports.selectAllReviews = async (sort_by = "created_at", order = "DESC") => {
+  console.log(sort_by);
   const selectQuery = `
   SELECT
   reviews.owner,

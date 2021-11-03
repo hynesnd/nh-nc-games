@@ -225,6 +225,26 @@ describe("api testing:", () => {
             });
           });
       });
+
+      it("Status 200: will sort response by column passed in sort_by query", () => {
+        return request(app)
+          .get("/api/reviews?sort_by=votes")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.reviews).toBeSortedBy("votes", {
+              descending: true,
+            });
+          });
+      });
+
+      it("Status 200: will sort response ascending or descending from order query", () => {
+        return request(app)
+          .get("/api/reviews?sort_by=votes&order=asc")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.reviews).toBeSortedBy("votes");
+          });
+      });
     });
   });
 });
