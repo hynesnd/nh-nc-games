@@ -15,7 +15,7 @@ exports.selectReview = async (review_id) => {
   reviews.category,
   reviews.created_at,
   reviews.votes,
-  count(comments.comment_id) AS comment_count
+  CAST(COUNT(comments.comment_id) AS INTEGER) AS comment_count
   FROM reviews
   LEFT JOIN comments ON reviews.review_id = comments.review_id
   WHERE reviews.review_id = $1
@@ -26,11 +26,7 @@ exports.selectReview = async (review_id) => {
   if (rows.length === 0) {
     return Promise.reject({ status: 404, msg: "id not found" });
   } else {
-    const formatRows = rows.map((row) => ({ ...row }));
-    formatRows.forEach(
-      (row) => (row.comment_count = convertBigintStrToNum(row.comment_count))
-    );
-    return formatRows[0];
+    return rows[0];
   }
 };
 
@@ -62,4 +58,23 @@ exports.updateReview = async (review_id, body) => {
   }
 };
 
-exports.selectAllReviews = async () => {};
+exports.selectAllReviews = async (sort_by = "created_at", order = "DESC") => {
+  const selectQuery = `
+  SELECT
+  reviews.owner,
+  reviews.title,
+  reviews.review_id,
+  reviews.category,
+  reviews.review_img_url,
+  reviews.created_at,
+  reviews.votes,
+  CAST(COUNT(comments.comment_id) AS INTEGER) AS comment_count
+  FROM reviews
+  LEFT JOIN comments ON reviews.review_id = comments.review_id
+  GROUP BY reviews.review_id
+  ORDER BY ${sort_by} ${order}`;
+
+  const { rows } = await db.query(selectQuery);
+
+  return rows;
+};

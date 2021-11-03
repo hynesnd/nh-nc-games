@@ -25,6 +25,8 @@ exports.patchReview = (req, res, next) => {
 
 exports.getAllReviews = (req, res, next) => {
   selectAllReviews()
-    .then(() => {})
+    .then((reviews) => {
+      res.status(200).send({ reviews });
+    })
     .catch(next);
 };

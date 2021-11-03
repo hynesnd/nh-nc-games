@@ -214,6 +214,17 @@ describe("api testing:", () => {
             });
           });
       });
+
+      it("Status 200: response sorted by date desc by default", () => {
+        return request(app)
+          .get("/api/reviews")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.reviews).toBeSortedBy("created_at", {
+              descending: true,
+            });
+          });
+      });
     });
   });
 });
