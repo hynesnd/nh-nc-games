@@ -281,6 +281,33 @@ describe("api testing:", () => {
             expect(body.msg).toBe("invalid order query");
           });
       });
+
+      it("Status 404: responds with not found if searching for category that doesn't exist", () => {
+        return request(app)
+          .get("/api/reviews?category=notacategory")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("not found");
+          });
+      });
+
+      it("Status 404: responds with not found if searching for category that doesn't exist", () => {
+        return request(app)
+          .get("/api/reviews?category=notacategory")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("not found");
+          });
+      });
+
+      it("Status 404: responds with no reviews found under category if category exists but has no reviews", () => {
+        return request(app)
+          .get("/api/reviews?category=children's games")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("no reviews found under category");
+          });
+      });
     });
   });
 });
