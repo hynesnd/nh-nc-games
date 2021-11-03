@@ -26,6 +26,18 @@ exports.selectCommentsByReviewId = async (review_id) => {
 };
 
 exports.insertCommentByReviewId = async (review_id, reqBody) => {
+  await checkExists("reviews", "review_id", review_id);
+  if (Object.keys(reqBody).length !== 2) {
+    return Promise.reject({ status: 400, msg: "invalid query body" });
+  }
+
+  const insertKeys = ["username", "body"];
+  for (let i = 0; i < insertKeys.length; i++) {
+    if (!reqBody.hasOwnProperty(insertKeys[i])) {
+      return Promise.reject({ status: 400, msg: "invalid query body" });
+    }
+  }
+
   const { username, body } = reqBody;
   const insertQuery = `
   INSERT INTO comments

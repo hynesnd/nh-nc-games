@@ -374,11 +374,41 @@ describe("api testing:", () => {
 
       it("Status 404: responds with resource not found if attempting to post comment to review_id that does not exist", () => {
         return request(app)
-          .post("/api/reviews/999999/comments")
+          .post("/api/reviews/9999999/comments")
           .send({ username: "mallionaire", body: "test review" })
           .expect(404)
           .then(({ body }) => {
             expect(body.msg).toBe("resource not found");
+          });
+      });
+
+      it("Status 404: responds with invalid query if review_id not a number", () => {
+        return request(app)
+          .post("/api/reviews/NotANumber/comments")
+          .send({ username: "mallionaire", body: "test review" })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
+
+      it("Status 400: responds with invalid query body when req body has too few or too many columns", () => {
+        return request(app)
+          .post("/api/reviews/1/comments")
+          .send({})
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query body");
+          });
+      });
+
+      it("Status 400: responds with invalid query body when length correct but username or body are not present", () => {
+        return request(app)
+          .post("/api/reviews/1/comments")
+          .send({ wrongColumn: 1, wrongColumn2: "Hello" })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query body");
           });
       });
     });
