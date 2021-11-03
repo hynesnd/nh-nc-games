@@ -74,8 +74,13 @@ exports.selectAllReviews = async (
     "comment_count",
   ];
 
+  const orderQueries = ["asc", "ASC", "desc", "DESC"];
+
   if (!sortColumns.includes(sort_by)) {
     return Promise.reject({ status: 400, msg: "invalid sort_by query" });
+  }
+  if (!orderQueries.includes(order)) {
+    return Promise.reject({ status: 400, msg: "invalid order query" });
   }
   let selectQuery = `
   SELECT

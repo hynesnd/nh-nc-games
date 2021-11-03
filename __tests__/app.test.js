@@ -263,6 +263,24 @@ describe("api testing:", () => {
             expect(body.msg).toBe("invalid sort_by query");
           });
       });
+
+      it("Status 400: responds with invalid sort_by query if sorting by column that doesn't exist.", () => {
+        return request(app)
+          .get("/api/reviews?sort_by=notAColumn")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid sort_by query");
+          });
+      });
+
+      it("Status 400: responds with invalid order query if not passed asc or desc", () => {
+        return request(app)
+          .get("/api/reviews?order=notascordesc")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid order query");
+          });
+      });
     });
   });
 });
