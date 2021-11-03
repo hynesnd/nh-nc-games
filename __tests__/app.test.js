@@ -282,21 +282,12 @@ describe("api testing:", () => {
           });
       });
 
-      it("Status 404: responds with not found if searching for category that doesn't exist", () => {
+      it("Status 404: responds with resource not found if searching for category that doesn't exist", () => {
         return request(app)
           .get("/api/reviews?category=notacategory")
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("not found");
-          });
-      });
-
-      it("Status 404: responds with not found if searching for category that doesn't exist", () => {
-        return request(app)
-          .get("/api/reviews?category=notacategory")
-          .expect(404)
-          .then(({ body }) => {
-            expect(body.msg).toBe("not found");
+            expect(body.msg).toBe("resource not found");
           });
       });
 

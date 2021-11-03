@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { convertBigintStrToNum } = require("../utils");
+const { convertBigintStrToNum, checkExists } = require("../utils");
 
 exports.selectReview = async (review_id) => {
   //if review === undefined return a promise reject
@@ -108,7 +108,11 @@ exports.selectAllReviews = async (
   const { rows } = await db.query(selectQuery, selectParams);
 
   if (rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "not found" });
+    await checkExists("categories", "slug", category);
+    return Promise.reject({
+      status: 404,
+      msg: "no reviews found under category",
+    });
   } else {
     return rows;
   }

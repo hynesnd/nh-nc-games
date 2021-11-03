@@ -25,6 +25,6 @@ exports.checkExists = async (table, column, value) => {
 
   console.log(rows);
   if (rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "Resource not found" });
+    return Promise.reject({ status: 404, msg: "resource not found" });
   }
 };
