@@ -109,10 +109,7 @@ exports.selectAllReviews = async (
 
   if (rows.length === 0) {
     await checkExists("categories", "slug", category);
-    return Promise.reject({
-      status: 404,
-      msg: "no reviews found under category",
-    });
+    return rows;
   } else {
     return rows;
   }
