@@ -10,3 +10,5 @@ FROM users;`;
 
   return rows;
 };
+
+exports.selectUser = async () => {};
