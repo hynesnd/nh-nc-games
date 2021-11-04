@@ -295,7 +295,7 @@ describe("api testing:", () => {
           });
       });
 
-      it("Status 200: responds empty array if category exists but has no reviews", () => {
+      it("Status 200: responds with empty array if category exists but has no reviews", () => {
         return request(app)
           .get("/api/reviews?category=children's games")
           .expect(200)
@@ -337,12 +337,12 @@ describe("api testing:", () => {
           });
       });
 
-      it("Status 404: responds with no comments found under review if review_id has no comments associated", () => {
+      it("Status 200: responds with empty array if review_id has no comments associated", () => {
         return request(app)
           .get("/api/reviews/1/comments")
-          .expect(404)
+          .expect(200)
           .then(({ body }) => {
-            expect(body.msg).toBe("no comments found under review");
+            expect(body.reviews).toHaveLength(0);
           });
       });
 
