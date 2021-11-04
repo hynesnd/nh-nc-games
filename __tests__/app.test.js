@@ -445,6 +445,15 @@ describe("api testing:", () => {
             expect(body.msg).toBe("resource not found: 99999");
           });
       });
+
+      it("Status 400: returns invalid query when acomment_id not a number", () => {
+        return request(app)
+          .delete("/api/comments/noANumber")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
     });
   });
 });
