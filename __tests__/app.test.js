@@ -4,6 +4,7 @@ const seed = require("../db/seeds/seed.js");
 const app = require("../app");
 const request = require("supertest");
 const { checkExists } = require("../utils");
+const endpointData = require("../endpoints.json");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -454,6 +455,17 @@ describe("api testing:", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
+    });
+  });
+
+  describe("/api path", () => {
+    it("Status 200: responds with JSON describing available endpoints", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.endpoints).toEqual(endpointData);
+        });
     });
   });
 });

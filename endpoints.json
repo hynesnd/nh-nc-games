@@ -26,9 +26,89 @@
           "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
           "category": "hidden-roles",
           "created_at": 1610964101251,
-          "votes": 5
+          "votes": 5,
+          "comment_count": 5
         }
       ]
     }
+  },
+  "GET /api/reviews/:review_id": {
+    "description": "serves a single review object by review_id",
+    "queries": [],
+    "exampleResponse": {
+      "review": [
+        {
+          "owner": "happyamy2016",
+          "title": "One Night Ultimate Werewolf",
+          "review_id": 5,
+          "review_body": "I loved this game!",
+          "designer": "Akihisa Okui",
+          "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+          "category": "hidden-roles",
+          "created_at": 1610964101251,
+          "votes": 5,
+          "comment_count": 5
+        }
+      ]
+    }
+  },
+  "PATCH /api/reviews/:review_id": {
+    "description": "increments a chosen review_id's votes value by number included on request body's inc_votes key",
+    "queries": [],
+    "exampleRequestBody": { "inc_votes": 5 },
+    "exampleResponse": {
+      "review": [
+        {
+          "owner": "happyamy2016",
+          "title": "One Night Ultimate Werewolf",
+          "review_id": 5,
+          "review_body": "I loved this game!",
+          "designer": "Akihisa Okui",
+          "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+          "category": "hidden-roles",
+          "created_at": 1610964101251,
+          "votes": 10
+        }
+      ]
+    }
+  },
+  "GET /api/reviews/:review_id/comments": {
+    "description": "serves an array of all comments associated with a review_id",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 7,
+          "votes": 10,
+          "created_at": 1610964101251,
+          "author": "happyamy2016",
+          "body": "Great review!"
+        }
+      ]
+    }
+  },
+  "POST /api/reviews/:review_id/comments": {
+    "description": "posts a new comment associated with a review_id",
+    "queries": [],
+    "exampleRequestBody": {
+      "username": "happyamy2016",
+      "body": "Great review!"
+    },
+    "exampleResponse": {
+      "comment": [
+        {
+          "comment_id": 8,
+          "votes": 0,
+          "created_at": 1610964101251,
+          "author": "happyamy2016",
+          "body": "Great review!"
+        }
+      ]
+    }
+  },
+  "POST /api/comments/:commment_id": {
+    "description": "deletes a comment by comment_id",
+    "queries": [],
+    "exampleResponse": {}
   }
 }
