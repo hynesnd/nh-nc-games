@@ -9,7 +9,10 @@ exports.getAllUsers = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-  selectUser()
-    .then(() => {})
+  const { username } = req.params;
+  selectUser(username)
+    .then((user) => {
+      res.status(200).send({ user });
+    })
     .catch(next);
 };

@@ -11,4 +11,16 @@ FROM users;`;
   return rows;
 };
 
-exports.selectUser = async () => {};
+exports.selectUser = async (username) => {
+  const selectStr = `
+  SELECT
+  username,
+  avatar_url,
+  name
+  FROM users
+  WHERE username = $1`;
+
+  const { rows } = await db.query(selectStr, [username]);
+
+  return rows[0];
+};
