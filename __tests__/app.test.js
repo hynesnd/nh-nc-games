@@ -288,7 +288,7 @@ describe("api testing:", () => {
           .get("/api/reviews?category=notacategory")
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("resource not found");
+            expect(body.msg).toBe("resource not found: notacategory");
           });
       });
 
@@ -330,7 +330,7 @@ describe("api testing:", () => {
           .get("/api/reviews/999999/comments")
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("resource not found");
+            expect(body.msg).toBe("resource not found: 999999");
           });
       });
 
@@ -378,7 +378,7 @@ describe("api testing:", () => {
           .send({ username: "mallionaire", body: "test review" })
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("resource not found");
+            expect(body.msg).toBe("resource not found: 9999999");
           });
       });
 
@@ -418,7 +418,7 @@ describe("api testing:", () => {
           .send({ username: 1, body: "Hello" })
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("resource not found"); //should I make the checkExists error more specific?
+            expect(body.msg).toBe("resource not found: 1"); //should I make the checkExists error more specific?
           });
       });
     });

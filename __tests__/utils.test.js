@@ -35,11 +35,11 @@ describe("convertBigintStrToNum util:", () => {
 });
 
 describe("checkExists util:", () => {
-  it("Should return a promise rejection if value not present in column", async () => {
+  it("Should return a promise rejection if value not present in column, and notify the column not found", async () => {
     expect.assertions(1);
     await expect(
       checkExists("categories", "slug", "notAColumn")
-    ).rejects.toEqual({ status: 404, msg: "Resource not found" });
+    ).rejects.toEqual({ status: 404, msg: "resource not found: notAColumn" });
   });
 
   it("Should resolve to undefined if value is present in column", async () => {
