@@ -411,6 +411,16 @@ describe("api testing:", () => {
             expect(body.msg).toBe("invalid query body");
           });
       });
+
+      it("Status 404: responds with resource not found when username does not exist", () => {
+        return request(app)
+          .post("/api/reviews/1/comments")
+          .send({ username: 1, body: "Hello" })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found"); //should I make the checkExists error more specific?
+          });
+      });
     });
   });
 });

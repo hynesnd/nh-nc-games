@@ -39,6 +39,9 @@ exports.insertCommentByReviewId = async (review_id, reqBody) => {
   }
 
   const { username, body } = reqBody;
+
+  await checkExists("users", "username", username);
+
   const insertQuery = `
   INSERT INTO comments
   (review_id, author, body)
