@@ -55,3 +55,5 @@ exports.insertCommentByReviewId = async (review_id, reqBody) => {
 
   return rows[0];
 };
+
+exports.removeComment = async () => {};

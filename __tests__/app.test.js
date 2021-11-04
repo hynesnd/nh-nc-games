@@ -418,7 +418,20 @@ describe("api testing:", () => {
           .send({ username: 1, body: "Hello" })
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("resource not found: 1"); //should I make the checkExists error more specific?
+            expect(body.msg).toBe("resource not found: 1");
+          });
+      });
+    });
+
+    describe("DELETE method:", () => {
+      it("Status 200: deletes proper row and responds with status 204", async () => {
+        return request(app)
+          .delete("/api/comments/1")
+          .expect(204)
+          .then(async () => {
+            await expect(
+              checkExists("comments", "comment_id", "1")
+            ).rejects.toEqual({ status: 404, msg: "resource not found: 1" });
           });
       });
     });
