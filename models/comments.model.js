@@ -16,10 +16,7 @@ exports.selectCommentsByReviewId = async (review_id) => {
 
   if (rows.length === 0) {
     await checkExists("reviews", "review_id", review_id);
-    return Promise.reject({
-      status: 404,
-      msg: "no comments found under review",
-    });
+    return rows;
   } else {
     return rows;
   }

@@ -342,7 +342,7 @@ describe("api testing:", () => {
           .get("/api/reviews/1/comments")
           .expect(200)
           .then(({ body }) => {
-            expect(body.reviews).toHaveLength(0);
+            expect(body.comments).toHaveLength(0);
           });
       });
 
