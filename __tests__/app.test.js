@@ -295,12 +295,12 @@ describe("api testing:", () => {
           });
       });
 
-      it("Status 404: responds with no reviews found under category if category exists but has no reviews", () => {
+      it("Status 200: responds empty array if category exists but has no reviews", () => {
         return request(app)
           .get("/api/reviews?category=children's games")
-          .expect(404)
+          .expect(200)
           .then(({ body }) => {
-            expect(body.msg).toBe("no reviews found under category");
+            expect(body.reviews).toHaveLength(0);
           });
       });
     });
