@@ -27,6 +27,7 @@ describe("api testing:", () => {
           .expect(200)
           .then(({ body }) => {
             expect(Array.isArray(body.categories)).toBe(true);
+            expect(body.categories).toHaveLength(4);
             body.categories.forEach((cat) => {
               expect.objectContaining({
                 slug: expect.any(String),
@@ -200,6 +201,7 @@ describe("api testing:", () => {
           .get("/api/reviews")
           .expect(200)
           .then(({ body }) => {
+            expect(body.reviews).toHaveLength(13);
             body.reviews.forEach((rev) => {
               expect(rev).toEqual(
                 expect.objectContaining({
