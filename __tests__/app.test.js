@@ -488,4 +488,23 @@ describe("api testing:", () => {
       });
     });
   });
+
+  describe("/api/users/:username path:", () => {
+    describe("GET method:", () => {
+      it("Status 200: responds with a correct user object", () => {
+        return request(app)
+          .get("/api/users/mallionaire")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.user).toEqual(
+              expect.objectContaining({
+                username: expect.any(String),
+                name: expect.any(String),
+                avatar_url: expect.any(String),
+              })
+            );
+          });
+      });
+    });
+  });
 });
