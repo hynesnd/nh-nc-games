@@ -425,7 +425,7 @@ describe("api testing:", () => {
     });
   });
 
-  describe("/api/comments path:", () => {
+  describe("/api/comments/:comment_id path:", () => {
     describe("DELETE method:", () => {
       it("Status 200: deletes proper row and responds with status 204", async () => {
         return request(app)
