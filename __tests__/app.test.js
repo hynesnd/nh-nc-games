@@ -3,7 +3,7 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const app = require("../app");
 const request = require("supertest");
-const { forEach } = require("../db/data/test-data/categories.js");
+const { checkExists } = require("../utils");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -422,7 +422,9 @@ describe("api testing:", () => {
           });
       });
     });
+  });
 
+  describe("/api/comments path:", () => {
     describe("DELETE method:", () => {
       it("Status 200: deletes proper row and responds with status 204", async () => {
         return request(app)
@@ -432,6 +434,15 @@ describe("api testing:", () => {
             await expect(
               checkExists("comments", "comment_id", "1")
             ).rejects.toEqual({ status: 404, msg: "resource not found: 1" });
+          });
+      });
+
+      it("Status 404: returns resource not found when attempting to delete a comment that does not exist", () => {
+        return request(app)
+          .delete("/api/comments/99999")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found: 99999");
           });
       });
     });

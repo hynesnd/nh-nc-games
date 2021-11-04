@@ -23,7 +23,10 @@ exports.postCommentByReviewId = (req, res, next) => {
 };
 
 exports.deleteComment = (req, res, next) => {
-  removeComment()
-    .then(() => {})
+  const { comment_id } = req.params;
+  removeComment(comment_id)
+    .then((comment) => {
+      res.status(204).send({});
+    })
     .catch(next);
 };

@@ -56,4 +56,14 @@ exports.insertCommentByReviewId = async (review_id, reqBody) => {
   return rows[0];
 };
 
-exports.removeComment = async () => {};
+exports.removeComment = async (comment_id) => {
+  await checkExists("comments", "comment_id", comment_id);
+  const deleteStr = `
+  DELETE FROM comments
+  WHERE comment_id = $1
+  RETURNING *`;
+
+  const { rows } = await db.query(deleteStr, [comment_id]);
+
+  return rows[0];
+};
