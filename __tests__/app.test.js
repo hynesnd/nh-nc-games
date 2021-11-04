@@ -468,4 +468,24 @@ describe("api testing:", () => {
         });
     });
   });
+
+  describe("/api/users path:", () => {
+    describe("GET method:", () => {
+      it("Status 200: responds with array of user objects", () => {
+        return request(app)
+          .get("/api/users")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.users).toHaveLength(4);
+            body.users.forEach((user) => {
+              expect(user).toEqual(
+                expect.objectContaining({
+                  username: expect.any(String),
+                })
+              );
+            });
+          });
+      });
+    });
+  });
 });
