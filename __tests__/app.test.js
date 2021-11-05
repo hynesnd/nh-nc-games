@@ -549,6 +549,17 @@ describe("api testing:", () => {
             expect(body.msg).toBe("invalid query body");
           });
       });
+
+      it("EXTRA TASK : Status 400: responds with invalid query if inc_votes wrong datatype", () => {
+        const newVote = "invalid";
+        return request(app)
+          .patch("/api/comments/2")
+          .send({ inc_votes: newVote })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
     });
   });
 
