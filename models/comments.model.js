@@ -65,4 +65,16 @@ exports.removeComment = async (comment_id) => {
   return rows[0];
 };
 
-exports.updateCommentVotes = async (comment_id, body) => {};
+exports.updateCommentVotes = async (comment_id, body) => {
+  const updateStr = `
+  UPDATE comments
+  SET votes = votes + $2
+  WHERE comment_id = $1
+  RETURNING *`;
+
+  const queryParams = [comment_id, body.inc_votes];
+
+  const { rows } = await db.query(updateStr, queryParams);
+
+  return rows[0];
+};
