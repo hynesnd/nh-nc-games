@@ -66,6 +66,8 @@ exports.removeComment = async (comment_id) => {
 };
 
 exports.updateCommentVotes = async (comment_id, body) => {
+  await checkExists("comments", "comment_id", comment_id);
+
   const updateStr = `
   UPDATE comments
   SET votes = votes + $2
