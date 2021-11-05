@@ -57,19 +57,17 @@
     "queries": [],
     "exampleRequestBody": { "inc_votes": 5 },
     "exampleResponse": {
-      "review": [
-        {
-          "owner": "happyamy2016",
-          "title": "One Night Ultimate Werewolf",
-          "review_id": 5,
-          "review_body": "I loved this game!",
-          "designer": "Akihisa Okui",
-          "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-          "category": "hidden-roles",
-          "created_at": 1610964101251,
-          "votes": 10
-        }
-      ]
+      "review": {
+        "owner": "happyamy2016",
+        "title": "One Night Ultimate Werewolf",
+        "review_id": 5,
+        "review_body": "I loved this game!",
+        "designer": "Akihisa Okui",
+        "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "category": "hidden-roles",
+        "created_at": 1610964101251,
+        "votes": 10
+      }
     }
   },
   "GET /api/reviews/:review_id/comments": {
@@ -106,9 +104,46 @@
       ]
     }
   },
-  "POST /api/comments/:commment_id": {
+  "DELETE /api/comments/:commment_id": {
     "description": "deletes a comment by comment_id",
     "queries": [],
     "exampleResponse": {}
+  },
+  "PATCH /api/comments/:commment_id": {
+    "description": "increments a chosen review_id's votes value by number included on request body's inc_votes key",
+    "queries": [],
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 1,
+        "votes": 20,
+        "created_at": 1610964101251,
+        "author": "bainesface",
+        "body": "I loved this game too!"
+      }
+    }
+  },
+  "GET /api/users": {
+    "description": "serves an array of all usernames",
+    "queries": [],
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "bainesface"
+        }
+      ]
+    }
+  },
+  "GET /api/users/:username": {
+    "description": "serves a single user object by username",
+    "queries": [],
+    "exampleResponse": {
+      "user": [
+        {
+          "username": "bainesface",
+          "name": "Sarah",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
+        }
+      ]
+    }
   }
 }
