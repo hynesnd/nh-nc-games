@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { convertBigintStrToNum, checkExists } = require("../utils");
+const { checkExists } = require("../utils");
 
 exports.selectReview = async (review_id) => {
   const selectQuery = `
