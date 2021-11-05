@@ -68,6 +68,10 @@ exports.removeComment = async (comment_id) => {
 exports.updateCommentVotes = async (comment_id, body) => {
   await checkExists("comments", "comment_id", comment_id);
 
+  if (Object.keys(body).length !== 1) {
+    return Promise.reject({ status: 400, msg: "invalid query body" });
+  }
+
   const { inc_votes } = body;
 
   if (inc_votes === undefined || inc_votes === null) {
