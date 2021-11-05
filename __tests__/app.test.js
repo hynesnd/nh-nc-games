@@ -516,6 +516,17 @@ describe("api testing:", () => {
             );
           });
       });
+
+      it("EXTRA TASK : Status 404: responds with resource not found if attempting to patch comment_id that doesn't exist", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/comments/99999")
+          .send({ inc_votes: newVote })
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found: 99999");
+          });
+      });
     });
   });
 
