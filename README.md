@@ -12,6 +12,7 @@ This project mimics the building of a real world back-end service similar to red
 It aims to demonstrate:
 
 - Use of a node.js web server app,
+- Bduilding a RESTful api.
 - Underpinning postGresSQL database
 - Use of MVC architecture
 - Proper error handling.
