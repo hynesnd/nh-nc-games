@@ -68,13 +68,19 @@ exports.removeComment = async (comment_id) => {
 exports.updateCommentVotes = async (comment_id, body) => {
   await checkExists("comments", "comment_id", comment_id);
 
+  const { inc_votes } = body;
+
+  if (inc_votes === undefined || inc_votes === null) {
+    return Promise.reject({ status: 400, msg: "invalid query body" });
+  }
+
   const updateStr = `
   UPDATE comments
   SET votes = votes + $2
   WHERE comment_id = $1
   RETURNING *`;
 
-  const queryParams = [comment_id, body.inc_votes];
+  const queryParams = [comment_id, inc_votes];
 
   const { rows } = await db.query(updateStr, queryParams);
 
