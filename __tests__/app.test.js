@@ -560,6 +560,17 @@ describe("api testing:", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
+
+      it("EXTRA TASK : Status 400: responds with invalid query if req body has too many columns", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/comments/2")
+          .send({ inc_votes: newVote, extra_column: "I'm wrong" })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query body");
+          });
+      });
     });
   });
 
