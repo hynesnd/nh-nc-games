@@ -64,3 +64,5 @@ exports.removeComment = async (comment_id) => {
 
   return rows[0];
 };
+
+exports.updateCommentVotes = async (comment_id, body) => {};
