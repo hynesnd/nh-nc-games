@@ -538,6 +538,17 @@ describe("api testing:", () => {
             expect(body.msg).toBe("invalid query");
           });
       });
+
+      it("EXTRA TASK : Status 400: responds with invalid query body if not passed proper inc_votes", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/comments/2")
+          .send({ NOT_THE_COLUMN: newVote })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query body");
+          });
+      });
     });
   });
 
