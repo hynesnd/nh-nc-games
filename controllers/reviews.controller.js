@@ -6,7 +6,6 @@ const {
 
 exports.getReview = (req, res, next) => {
   const { review_id } = req.params;
-  //if !review_id next({status, msg})
   selectReview(review_id)
     .then((review) => {
       res.status(200).send({ review });
