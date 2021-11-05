@@ -460,7 +460,7 @@ describe("api testing:", () => {
     });
 
     describe("EXTRA TASK : PATCH method: ", () => {
-      it("Status 200: responds with an updated comment object", () => {
+      it("EXTRA TASK : Status 200: responds with an updated comment object", () => {
         const newVote = 5;
         return request(app)
           .patch("/api/comments/1")
@@ -474,6 +474,44 @@ describe("api testing:", () => {
                 created_at: expect.any(String),
                 author: expect.any(String),
                 body: expect.any(String),
+              })
+            );
+          });
+      });
+
+      it("EXTRA TASK : Status 200: comment votes are increased by the correct amount", () => {
+        const newVote = 4;
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ inc_votes: newVote })
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comment).toEqual(
+              expect.objectContaining({
+                comment_id: 1,
+                votes: 20,
+                created_at: expect.any(String),
+                author: "bainesface",
+                body: "I loved this game too!",
+              })
+            );
+          });
+      });
+
+      it("EXTRA TASK : Status 200: comment votes are decreased by the correct amount", () => {
+        const newVote = -6;
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ inc_votes: newVote })
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comment).toEqual(
+              expect.objectContaining({
+                comment_id: 1,
+                votes: 10,
+                created_at: expect.any(String),
+                author: "bainesface",
+                body: "I loved this game too!",
               })
             );
           });
