@@ -72,12 +72,12 @@ exports.selectAllReviews = async (
     "comment_count",
   ];
 
-  const orderQueries = ["asc", "ASC", "desc", "DESC"];
+  const orderQueries = ["asc", "desc"];
 
   if (!sortColumns.includes(sort_by)) {
     return Promise.reject({ status: 400, msg: "invalid sort_by query" });
   }
-  if (!orderQueries.includes(order)) {
+  if (!orderQueries.includes(order.toLowerCase())) {
     return Promise.reject({ status: 400, msg: "invalid order query" });
   }
 
