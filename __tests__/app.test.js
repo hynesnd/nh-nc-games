@@ -458,6 +458,27 @@ describe("api testing:", () => {
           });
       });
     });
+
+    describe("EXTRA TASK : PATCH method: ", () => {
+      it("Status 200: responds with an updated comment object", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ inc_votes: newVote })
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comment).toEqual(
+              expect.objectContaining({
+                comment_id: expect.any(Number),
+                votes: expect.any(Number),
+                created_at: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+              })
+            );
+          });
+      });
+    });
   });
 
   describe("/api path", () => {
@@ -491,8 +512,8 @@ describe("api testing:", () => {
     });
   });
 
-  describe("/api/users/:username path:", () => {
-    describe("GET method:", () => {
+  describe("EXTRA TASK : /api/users/:username path:", () => {
+    describe("EXTRA TASK : GET method:", () => {
       it("Status 200: responds with a correct user object", () => {
         return request(app)
           .get("/api/users/mallionaire")
@@ -508,7 +529,7 @@ describe("api testing:", () => {
           });
       });
 
-      it("Status 404: returns resource not found when searching for username that doesn't exist", () => {
+      it("EXTRA TASK : Status 404: returns resource not found when searching for username that doesn't exist", () => {
         return request(app)
           .get("/api/users/iDontExist")
           .expect(404)
@@ -516,6 +537,15 @@ describe("api testing:", () => {
             expect(body.msg).toBe("resource not found: iDontExist");
           });
       });
+
+      // it("EXTRA TASK : Status 400: returns invalid query when username wrong datatype", () => {
+      //   return request(app)
+      //     .get("/api/users/<>^`{|}|;;")
+      //     .expect(400)
+      //     .then(({ body }) => {
+      //       expect(body.msg).toBe("invalid query");
+      //     });
+      // });
     });
   });
 });
