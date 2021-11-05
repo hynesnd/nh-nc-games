@@ -1,4 +1,3 @@
-const app = require("../app");
 const apiRouter = require("express").Router();
 const categoriesRouter = require("./categories.router");
 const commentsRouter = require("./comments.router");
