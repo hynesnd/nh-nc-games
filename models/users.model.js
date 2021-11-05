@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { checkExists } = require("../utils");
 
 exports.selectAllUsers = async () => {
   const selectStr = `
@@ -12,6 +13,7 @@ FROM users;`;
 };
 
 exports.selectUser = async (username) => {
+  await checkExists("users", "username", username);
   const selectStr = `
   SELECT
   username,
