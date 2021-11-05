@@ -527,6 +527,17 @@ describe("api testing:", () => {
             expect(body.msg).toBe("resource not found: 99999");
           });
       });
+
+      it("EXTRA TASK : Status 400: responds with invalid query when comment_id not a number", () => {
+        const newVote = 5;
+        return request(app)
+          .patch("/api/comments/INVALID")
+          .send({ inc_votes: newVote })
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("invalid query");
+          });
+      });
     });
   });
 
