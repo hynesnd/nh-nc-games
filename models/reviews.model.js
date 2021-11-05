@@ -80,6 +80,11 @@ exports.selectAllReviews = async (
   if (!orderQueries.includes(order)) {
     return Promise.reject({ status: 400, msg: "invalid order query" });
   }
+
+  const queryParams = [];
+  const catWhere = category ? " WHERE category = $1 " : "";
+  if (category) queryParams.push(category);
+
   let selectQuery = `
   SELECT
   reviews.owner,
@@ -91,19 +96,12 @@ exports.selectAllReviews = async (
   reviews.votes,
   CAST(COUNT(comments.comment_id) AS INTEGER) AS comment_count
   FROM reviews
-  LEFT JOIN comments ON reviews.review_id = comments.review_id`;
-
-  const selectParams = [];
-  if (category) {
-    selectParams.push(category);
-    selectQuery += " WHERE category = $1";
-  }
-
-  selectQuery += ` 
+  LEFT JOIN comments ON reviews.review_id = comments.review_id
+  ${catWhere}
   GROUP BY reviews.review_id
   ORDER BY ${sort_by} ${order}`;
 
-  const { rows } = await db.query(selectQuery, selectParams);
+  const { rows } = await db.query(selectQuery, queryParams);
 
   if (rows.length === 0) {
     await checkExists("categories", "slug", category);
