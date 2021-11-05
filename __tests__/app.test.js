@@ -77,7 +77,7 @@ describe("api testing:", () => {
           .get("/api/reviews/999999")
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("id not found");
+            expect(body.msg).toBe("resource not found: 999999");
           });
       });
 

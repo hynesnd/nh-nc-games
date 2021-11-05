@@ -2,8 +2,6 @@ const db = require("../db/connection");
 const { convertBigintStrToNum, checkExists } = require("../utils");
 
 exports.selectReview = async (review_id) => {
-  //if review === undefined return a promise reject
-
   const selectQuery = `
   SELECT 
   reviews.owner,
@@ -24,7 +22,7 @@ exports.selectReview = async (review_id) => {
   const { rows } = await db.query(selectQuery, [review_id]);
 
   if (rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "id not found" });
+    await checkExists("reviews", "review_id", review_id);
   } else {
     return rows[0];
   }
