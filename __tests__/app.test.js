@@ -507,6 +507,15 @@ describe("api testing:", () => {
             );
           });
       });
+
+      it("Status 404: returns resource not found when searching for username that doesn't exist", () => {
+        return request(app)
+          .get("/api/users/iDontExist")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("resource not found: iDontExist");
+          });
+      });
     });
   });
 });
