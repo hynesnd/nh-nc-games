@@ -144,7 +144,7 @@ describe("api testing:", () => {
           .send({ inc_votes: newVote })
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("id not found");
+            expect(body.msg).toBe("resource not found: 9999");
           });
       });
 

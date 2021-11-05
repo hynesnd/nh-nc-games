@@ -29,7 +29,9 @@ exports.selectReview = async (review_id) => {
 };
 
 exports.updateReview = async (review_id, body) => {
-  if (Object.keys(body).length > 1) {
+  await checkExists("reviews", "review_id", review_id);
+
+  if (Object.keys(body).length !== 1) {
     return Promise.reject({ status: 400, msg: "invalid query body" });
   }
 
@@ -49,11 +51,7 @@ exports.updateReview = async (review_id, body) => {
 
   const { rows } = await db.query(updateQuery, queryParams);
 
-  if (rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "id not found" });
-  } else {
-    return rows[0];
-  }
+  return rows[0];
 };
 
 exports.selectAllReviews = async (
